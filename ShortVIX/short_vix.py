@@ -73,33 +73,34 @@ for i in range(len(open_data)):
 
 #--------------------------------------------------
 
-df = pd.DataFrame({'Date':Date, 'Buy/BuyMore/Sell':BBmS, 'Price':transaction, 'Transaction Number':transaction_number, 'Transaction Value':transaction_value, "Number of Shares":share_num })
-#df.to_csv('./PaperLedger.csv')
+df = pd.DataFrame({'Date':Date, 'Buy/BuyMore/Sell':BBmS, 'Price':transaction, 'Transaction Number':transaction_number, 'Transaction Value':transaction_value, "Number of Shares":share_num }).round(2)
+df.to_csv('./PaperLedger.csv')
 
-'''
-alt.Chart(df).mark_point(filled = True).encode(
+
+alt.Chart(df).mark_point(filled = True, size = 30).encode(
     x='Date:T',
     y='Price:Q',
-    color='Buy/BuyMore/Sell:N'
-).show()
-'''
+    color='Buy/BuyMore/Sell:N',
+    tooltip = ['Price','Buy/BuyMore/Sell']
+).interactive().show()
+
 
 #--------------------------------------------------
 returns, tnumber, pos_used = [], [], []
-for i in np.unique(df.TNumber.values):
-	newdf = df[df.TNumber == i]
-	returns += [(newdf['TValue'].values[-2] - newdf['TValue'].values[-1])/newdf['TValue'].values[-2]]
+for i in np.unique(df['Transaction Number'].values):
+	newdf = df[df['Transaction Number'] == i]
+	returns += [(newdf['Transaction Value'].values[-2] - newdf['Transaction Value'].values[-1])/newdf['Transaction Value'].values[-2]]
 	tnumber += [i]
 	pos_used += [round((len(newdf)-1)/number_of_increments,2)]
 
-print(sum(returns))
-'''
+print(sum(returns)*100, len(returns), np.mean(returns), np.median(returns))
+
 alt.Chart(pd.DataFrame({'Transaction Number':tnumber, 'Returns':returns, 'Position Used':pos_used})).mark_bar().encode(
     x='Transaction Number:O',
     y='Returns:Q',
-    color='Position Used:O'
-).show()
-'''
+    color='Position Used:O',
+    tooltip = ['Transaction Number','Returns','Position Used']
+).interactive().show()
 
 #--------------------------------------------------
 holdTime, datesHeld, startHold = [], [], []
@@ -110,13 +111,13 @@ for i in range(len(df.Date.values)//2):
 	datesHeld += [str(df.Date.values[2*i]) + ' to ' + str(df.Date.values[2*i + 1])]
 	startHold += [df.Date.values[2*i]]
 
-'''
+
 alt.Chart(pd.DataFrame({'datesHeld':datesHeld, 'holdTime':holdTime, 'Start':startHold})).mark_bar().encode(
     x='Start:T',
     y='holdTime:Q',
-    tooltip=['datesHeld']
+    tooltip=['Start','datesHeld','holdTime']
 ).interactive().show()
-'''
+
 
 '''
 Trade Stats: (On Close)
