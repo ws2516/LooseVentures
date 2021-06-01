@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 from datetime import date
 
 panel_data = pd.read_csv('./VIX.csv')
-panel_data_vix_above25 = panel_data[panel_data['Close'] >= 25]
-panel_data_vix_above25.to_csv('./VIXAbove25.csv')
+panel_data_vix_above30 = panel_data[panel_data['Close'] >= 30]
+panel_data_vix_above30.to_csv('./VIXAbove30.csv')
 '''
 def get_hold_time(date1, date2):
 	d1split = date1.split('-')
