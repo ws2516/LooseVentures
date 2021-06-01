@@ -4,7 +4,10 @@ import altair as alt
 import matplotlib.pyplot as plt
 from datetime import date
 
-
+panel_data = pd.read_csv('./VIX.csv')
+panel_data_vix_above25 = panel_data[panel_data['Close'] >= 25]
+panel_data_vix_above25.to_csv('./VIXAbove25.csv')
+'''
 def get_hold_time(date1, date2):
 	d1split = date1.split('-')
 	d2split = date2.split('-')
@@ -95,7 +98,7 @@ for vix_trigger in vix_triggers:
                 	continue
 dfOpt = pd.DataFrame({'cumulative_returns':cumulative_returns, 'number_of_trades':number_of_trades, 'mean_return':mean_return, 'median_return':median_return, 'max_return':max_return, "vix_triggered":vix_triggered, 'inc_incremented':inc_incremented,'dec_targeted':dec_targeted, 'number_of_incremented':number_of_incremented}).round(2)
 dfOpt.to_csv('./OptimizationReturnsLedger.csv')           
-
+'''
 #--------------------------------------------------
 
 #df = pd.DataFrame({'Date':Date, 'Buy/BuyMore/Sell':BBmS, 'Price':transaction, 'Transaction Number':transaction_number, 'Transaction Value':transaction_value, "Number of Shares":share_num }).round(2)
